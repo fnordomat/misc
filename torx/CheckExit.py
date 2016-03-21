@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 """
-Collects data for documenting TLS MitM at Tor exits
-Doesn't by itself attempt to validate or check for deviations.
+Collects data (mainly certificates) for documentation of TLS MitM at Tor exits.
+Does not by itself attempt to validate certificates or check for deviations.
 
 Dependencies: sqlite3, stem, PySocks, PyOpenSSL
 """
