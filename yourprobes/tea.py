@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 
 #
-# Reads the ESSIDS from probe requests aloud, for the shock value.
+# Reads the ESSIDS from probe requests aloud.
 #
 
 # Requirements: A wifi driver that supports monitor mode.
@@ -22,7 +22,8 @@ from threading import Thread
 
 basedir = "."
 
-IFACE = "mon0"
+IFACE = "wlp2s0"
+# mon0"
 THRESHOLD = -65
 
 def install_lexrules(sayer):

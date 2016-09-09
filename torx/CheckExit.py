@@ -5,6 +5,7 @@ Collects data (mainly certificates) for documentation of TLS MitM at Tor exits.
 Does not by itself attempt to validate certificates or check for deviations.
 
 Dependencies: sqlite3, stem, PySocks, PyOpenSSL
+              antsy (for ANSI on terminal)
 """
 
 #
@@ -58,6 +59,8 @@ from stem.descriptor.remote import DescriptorDownloader
 from stem.control import Controller
 from stem.util import conf, connection
 from stem import CircuitExtensionFailed
+
+import antsy
 
 RANDOM = random.SystemRandom()
 
@@ -202,9 +205,19 @@ def try_connect(controller, circstart, myexit, dbconn, protocol):
                 cur.execute("INSERT INTO certs (digest, x509) VALUES (?,?)", (digest,str(pem)))
                 cur.execute("SELECT (id) FROM certs WHERE (digest==?)", (digest,))
                 idc = cur.fetchone()
-                print "Inserted new entry into CERTS table"
+
+                msg = "Inserted new entry into CERTS table"
+                if antsy.supports_color():
+                    print antsy.fg(msg, "red")
+                else:
+                    print msg
+
             else:
-                print "Found existing entry in CERTS table"
+                msg = "Found existing entry in CERTS table"
+                if antsy.supports_color():
+                    print antsy.fg(msg, "blue")
+                else:
+                    print msg
 
             cur.execute("INSERT INTO obs (what, host, port, cert_id, exit_id, success, recorded) VALUES (?,?,?,?,?,?,?)", (protocol.what(), protocol.host, protocol.port, idc[0], idu[0], "yes", datetime.datetime.utcnow()))
 
