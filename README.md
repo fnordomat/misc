@@ -6,3 +6,5 @@ Miscellaneous more or less handy stuff.
 Unique identifiers considered harmful.
 - yourprobes/tea.py: a very simple script that reads probed ESSIDs aloud using text-to-speech. use case: get clueless users to acknowledge the dangers posed by excessive chattiness of their WIFI devices.
 
+## emacs
+Highlighting iptables rules.
