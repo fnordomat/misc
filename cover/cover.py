@@ -1,10 +1,10 @@
 # Probably not very useful yet. Just an idea.
 
-# The idea is that your tor client should not sit idle when you're not active, immediately betraying that you're not active.
+# The idea is that your tor client should not sit idle when you're not active, immediately betraying that you're not active. It's not meant to be used all the time & use up resources of the network, but could be handy sometimes.
 
 # It's 3 tasks. If server fails, then program should exit. If server fails with errno 98, then switch to a different port. Set up hidden service only when that port is known. Only client should wait for publication of service.
 
-# Then random amounts of random traffic is sent to the hidden service at random intervals.
+# Once operational, the program sends random amounts of random traffic to the hidden service at random intervals.
 
 import time
 
@@ -21,17 +21,22 @@ import signal
 import multiprocessing
 from multiprocessing import Process, Queue
 
-CONTROL_PORT = 9151
-SOCKS_PORT = 9150
+# config settings
+CONTROL_PORT = 9051
+SOCKS_PORT = 9050
+DEFAULT_MEANWAIT = 2.1
+DEFAULT_MEANBYTES = 16384
 
 import socket
 import socks
 
 import math
 
+import getopt
+
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', SOCKS_PORT)
 
-extport = 22 # set any port for the hidden service
+extport = 80 # set any port for the hidden service
 # hidden service is public.
 
 # any good? won't they be able to fit the distribution?
@@ -80,28 +85,29 @@ def handler(signal, frame):
 
 class CoverSender:
 
-    def __init__(self, address):
+    def __init__(self, onion):
         self.r = Random.new()
         self.s = socks.socksocket()
-        self.address = address
+        self.address = onion
 
-    def run(self):
-
+    def run(self, meanwait = DEFAULT_MEANWAIT, meanbytes = DEFAULT_MEANBYTES
+):
+        """
+        To be run as a thread / process
+        
+        Keyword args:
+        meanwait -- mean waiting time between bursts (in seconds)
+        meanbytes -- mean #bytes to send per burst
+        """
         signal.signal(signal.SIGINT, handler)
 
         Random.atfork()
 
         # distribution parameters
-        meanwait  = 10.0   # mean waiting time in seconds
-        meanbytes = 8000   # mean number of bytes to send
         waitdistr = Exp(1.0 / meanwait)  #   waiting time
         lendistr  = Exp(1.0 / meanbytes) # message length
 
         while True:
-            pausea = waitdistr.sample(self.r)
-
-            print " c Sleep %.2fs ..." % pausea
-            time.sleep(pausea)
 
             try:
                 self.s = socks.socksocket()
@@ -124,16 +130,21 @@ class CoverSender:
 
             except Exception, e:
                 print " c Client error: %s" % e
+
+            pausea = waitdistr.sample(self.r)
+            
+            print " c Sleep %.2fs ..." % pausea
+            time.sleep(pausea)
+
             
 class CoverServer:
 
     def __init__(self, q):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.commq = q
+        self.outputq = q
 
     def run(self):
         signal.signal(signal.SIGINT, handler)
-#        signal.signal(signal.SIGINT, signal.SIG_IGN)
 
         s = self.socket
         
@@ -151,7 +162,7 @@ class CoverServer:
                     print " s Bind failure: %s" % e
                     raise e
 
-        self.commq.put({"myport":s.getsockname()[1]})
+        self.outputq.put({"myport":s.getsockname()[1]})
 
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.listen(600)
@@ -174,34 +185,35 @@ class CoverServer:
                 print " s Server error: %s" % e
 
 class StemSetup:
+    def __init__(self, outq, inq):
+        self.outputq = outq
+        self.inputq  = inq
+
     def run(self, myport, await = True):
+        signal.signal(signal.SIGINT, handler)
+
         print(' * Connecting to tor controller')
         with Controller.from_port(port=CONTROL_PORT) as controller:
             try:
                 controller.authenticate()
-                print(' * Authenticated to controller, starting hs')
-                
+                print(' * Authenticated, starting hs')
+
+                response = controller.create_ephemeral_hidden_service({extport: myport}, await_publication = await)
+
                 if await:
-                    response = controller.create_ephemeral_hidden_service({extport: myport}, await_publication = True)
                     print(" * Published service %s.onion" % response.service_id)
                 else:
-                    response = controller.create_ephemeral_hidden_service({extport: myport}, await_publication = False)
                     print(" * Created service %s.onion" % response.service_id)            
                     
                 address = "%s.onion" % response.service_id
 
-                cs = CoverSender(address)
-                
-                ps = Process(target=CoverSender.run, args=(cs,))
+                self.outputq.put({"onion":address})
+               
+                while True:
+                    item = self.inputq.get()
+                    if item == "quit":
+                        return
 
-                print(" * Starting cover traffic sender")
-                ps.start()
-                
-                ps.join()
-                    
-                print(" * Shutting down our hidden service")
-                
-                
             except stem.connection.MissingPassword:
                 pw = getpass.getpass("Controller password: ")
                 
@@ -215,25 +227,65 @@ class StemSetup:
                 print("Unable to authenticate: %s" % exc)
                 sys.exit(1)
 
-def main():
-
-    commq = Queue()
-    cS = CoverServer(commq)
+def main(meanwait=DEFAULT_MEANWAIT, meanbytes=DEFAULT_MEANBYTES):
+    commq1 = Queue()
+    cS = CoverServer(commq1)
     pS = Process(target=CoverServer.run, args=(cS,))
     print(" * Starting server listener")
     pS.start()
 
-    myport = commq.get()['myport']
+    myport = commq1.get()['myport']
     print(" * Server up at localport %d" % myport)
-    cstem = StemSetup()
+
+    commq2 = Queue()
+    commq3 = Queue() # used to signal end of work
+    cstem = StemSetup(commq2, commq3)
     pstem = Process(target=StemSetup.run, args=(cstem, myport, True))
     pstem.start()
+    onion = commq2.get()['onion']
 
-    for process in [pS,pstem]:
+    cs = CoverSender(onion)
+    ps = Process(target=CoverSender.run, args=(cs, meanwait, meanbytes))
+    print(" * Starting cover traffic sender")
+    ps.start()
+
+ 
+    for process in [pS,ps]:
         process.join()
 
+    commq3.put("quit")
+    pstem.join()
+
+def usage():
+    print "You're using it wrong, see source code"
 
 if __name__ == "__main__":
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'w:b:h', ['meanwait=', "meanbytes=", 'help'])
+    except getopt.GetoptError:
+        usage()
+        sys.exit(2)
+    
+    meanwait =  DEFAULT_MEANWAIT
+    meanbytes = DEFAULT_MEANBYTES
+        
+    for opt, arg in opts:
+        if opt in ('-h', '--help'):
+            usage()
+            sys.exit(2)
+        if opt in ('-b', '--meanbytes'):
+            try:
+                meanbytes = int(arg)
+            except Exception, e:
+                usage()
+                sys.exit(2)
+        if opt in ('-w', '--meanwait'):
+            try:
+                meanwait = float(arg)
+            except Exception, e:
+                usage()
+                sys.exit(2)
     try:
         main()
 
