@@ -1,10 +1,12 @@
+#!/usr/bin/python2
+
 # Probably not very useful yet. Just an idea.
 
 # The idea is that your tor client should not sit idle when you're not active, immediately betraying that you're not active. It's not meant to be used all the time & use up resources of the network, but could be handy sometimes.
 
 # It's 3 tasks. If server fails, then program should exit. If server fails with errno 98, then switch to a different port. Set up hidden service only when that port is known. Only client should wait for publication of service.
 
-# Once operational, the program sends random amounts of random traffic to the hidden service at random intervals.
+# Once operational, the program sends random amounts of random traffic to the hidden service at random intervals. Feel free to implement more realistic-looking protocols.
 
 import time
 
@@ -22,8 +24,8 @@ import multiprocessing
 from multiprocessing import Process, Queue
 
 # config settings
-CONTROL_PORT = 9051
-SOCKS_PORT = 9050
+CONTROL_PORT = 9151
+SOCKS_PORT = 9150
 DEFAULT_MEANWAIT = 2.1
 DEFAULT_MEANBYTES = 16384
 
@@ -32,6 +34,7 @@ import socks
 
 import math
 
+import re
 import getopt
 
 socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', SOCKS_PORT)
@@ -79,9 +82,8 @@ class Exp:
         return point
 
 def handler(signal, frame):
-    print "Exiting thread"
+    print ("Exiting thread")
     sys.exit(0)
-
 
 class CoverSender:
 
@@ -113,27 +115,27 @@ class CoverSender:
                 self.s = socks.socksocket()
                 self.s.setproxy(socks.PROXY_TYPE_SOCKS5,
                                 "127.0.0.1", SOCKS_PORT, True)
-                print " c Connect to %s:%d ..." % (self.address, extport)
+                print (" c Connect to %s:%d ..." % (self.address, extport))
                 self.s.connect((self.address, extport))
 
                 msglen = int(math.floor(lendistr.sample(self.r)))
 
                 msg = self.r.read(msglen)
-                print " c Attempting to send %d bytes ..." % msglen
+                print (" c Attempting to send %d bytes ..." % msglen)
 
                 numsent = 0
                 while numsent < msglen:
                     numsent += self.s.send(msg[numsent:])
 
-                print " c Done, closing socket"
+                print (" c Done, closing socket")
                 self.s.close()
 
-            except Exception, e:
-                print " c Client error: %s" % e
+            except Exception as e:
+                print (" c Client error: %s" % e)
 
             pausea = waitdistr.sample(self.r)
             
-            print " c Sleep %.2fs ..." % pausea
+            print (" c Sleep %.2fs ..." % pausea)
             time.sleep(pausea)
 
             
@@ -152,14 +154,14 @@ class CoverServer:
             try:
                 s.bind(('127.0.0.1', 0))
                 break
-            except Exception, e:
+            except Exception as e:
                 # this should'nt happen at all for port chosen by OS
                 if ("%s" % e)[:10] == "[Errno 98]":
                     f = 1.0
-                    print " s Bind failure: %s (retry %d)" % (e, f)
+                    print (" s Bind failure: %s (retry %d)" % (e, f))
                     time.sleep(f)
                 else:
-                    print " s Bind failure: %s" % e
+                    print (" s Bind failure: %s" % e)
                     raise e
 
         self.outputq.put({"myport":s.getsockname()[1]})
@@ -170,19 +172,21 @@ class CoverServer:
         while True:
             try:
                 c, addr = s.accept()
-                print ' s Got connection'
+                print (' s Got connection')
+                # ... all in the same thread ...
+
                 while True:
                     x = c.recv(1024)
-                    print " s Recvd bytes ", len(x)
+                    print (" s Recvd bytes %d" % len(x))
 
                     if x == '':
-                        print ' s End of transmission' # for whatever reason
+                        print (' s End of transmission') # for whatever reason
                         break
                 
                 c.close()
 
-            except Exception, e:
-                print " s Server error: %s" % e
+            except Exception as e:
+                print (" s Server error: %s" % e)
 
 class StemSetup:
     def __init__(self, outq, inq):
@@ -212,6 +216,7 @@ class StemSetup:
                 while True:
                     item = self.inputq.get()
                     if item == "quit":
+                        print (" * Quit hs controller thread")
                         return
 
             except stem.connection.MissingPassword:
@@ -227,68 +232,115 @@ class StemSetup:
                 print("Unable to authenticate: %s" % exc)
                 sys.exit(1)
 
-def main(meanwait=DEFAULT_MEANWAIT, meanbytes=DEFAULT_MEANBYTES):
-    commq1 = Queue()
-    cS = CoverServer(commq1)
-    pS = Process(target=CoverServer.run, args=(cS,))
-    print(" * Starting server listener")
-    pS.start()
+def main(options, meanwait=DEFAULT_MEANWAIT, meanbytes=DEFAULT_MEANBYTES):
+    o = options
 
-    myport = commq1.get()['myport']
-    print(" * Server up at localport %d" % myport)
+    commq3 = None
+    onion = ''
 
-    commq2 = Queue()
-    commq3 = Queue() # used to signal end of work
-    cstem = StemSetup(commq2, commq3)
-    pstem = Process(target=StemSetup.run, args=(cstem, myport, True))
-    pstem.start()
-    onion = commq2.get()['onion']
+    processes1 = []
+    processes2 = [] # exit only after processes1 quit
 
-    cs = CoverSender(onion)
-    ps = Process(target=CoverSender.run, args=(cs, meanwait, meanbytes))
-    print(" * Starting cover traffic sender")
-    ps.start()
+    if o.has_key('remote'):
+        onion = o['remote']
 
- 
-    for process in [pS,ps]:
-        process.join()
+    if o['server']:
+        commq1 = Queue()
+        cS = CoverServer(commq1)
+        pS = Process(target=CoverServer.run, args=(cS,))
+        print(" * Starting server listener")
+        pS.start()
+        myport = commq1.get()['myport']
+        print(" * Server up at localport %d" % myport)
 
-    commq3.put("quit")
-    pstem.join()
+        commq2 = Queue()
+        commq3 = Queue() # used to signal end of work
+        cstem = StemSetup(commq2, commq3)
+        pstem = Process(target=StemSetup.run, args=(cstem, myport, options['await']))
+        pstem.start()
+        onion = commq2.get()['onion']
+
+        processes2.append(pstem)
+        processes1.append(pS)
+
+    if o['client'] and len(onion):
+        print(" * Init cover traffic sender (client to %s)" % onion)
+        cs = CoverSender(onion)
+        ps = Process(target=CoverSender.run, args=(cs, meanwait, meanbytes))
+        print(" * Starting cover traffic sender")
+        ps.start()
+        processes1.append(ps)
+
+    if o['client'] and not len(onion):
+        print(" * Won't start cover traffic sender, no service given")
+
+    for p1 in processes1:
+        p1.join()
+
+    if o['server']:
+        commq3.put("quit")
+
+    for p in processes2:
+        p.join()
+
 
 def usage():
-    print "You're using it wrong, see source code"
+    print ("You're using it wrong, see source code")
 
 if __name__ == "__main__":
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'w:b:h', ['meanwait=', "meanbytes=", 'help'])
-    except getopt.GetoptError:
+        opts, args = getopt.getopt(sys.argv[1:],
+            'w:b:hsaAc:',
+            ['meanwait=', "meanbytes=", 'help', 'server', "autoclient", "await", 'client=' ])
+    except getopt.GetoptError as e:
+        print (e)
         usage()
         sys.exit(2)
     
     meanwait =  DEFAULT_MEANWAIT
     meanbytes = DEFAULT_MEANBYTES
-        
+
+    o = {'await':False, 'server':False, 'client':False}
+
     for opt, arg in opts:
+#        print (opt, arg)
         if opt in ('-h', '--help'):
             usage()
             sys.exit(2)
+
+        if opt in ('-s', '--server'):
+            o['server'] = True
+
+        if opt in ('-a', '--autoclient'):
+            o['client'] = True
+
+        if opt in ('-A', '--await'):
+            o['await'] = True        
+
+        if opt in ('-c', '--client'):
+            o['client'] = True
+            o['remote'] = arg
+            if not re.match("\.onion$", o['remote']):
+                o['remote'] += '.onion'
+
         if opt in ('-b', '--meanbytes'):
             try:
                 meanbytes = int(arg)
-            except Exception, e:
+            except Exception as e:
                 usage()
                 sys.exit(2)
+
         if opt in ('-w', '--meanwait'):
             try:
                 meanwait = float(arg)
-            except Exception, e:
+            except Exception as e:
                 usage()
                 sys.exit(2)
-    try:
-        main()
 
-    except KeyboardInterrupt, e:
-        print "Got ctrl-c, exiting more or less gracefully"
+    try:
+        main(o)
+
+    except KeyboardInterrupt as e:
+        print ("Got ctrl-c, exiting more or less gracefully")
 
