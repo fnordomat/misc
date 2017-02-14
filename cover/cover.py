@@ -59,8 +59,8 @@ class Exp:
         r = randomstream.read(rprecisionbytes) #
         val = 0.0
         num = 1
-        while r != "":
-            byte = ord(r[0])
+        while r != b'':
+            byte = r[0] # python3
             r = r[1:]
             for i in range(8):
                 bit = (byte & (1 << i)) >> i
@@ -184,7 +184,8 @@ class CoverServer:
                     x = c.recv(1024)
                     print (" s Recvd bytes %d" % len(x))
 
-                    if x == '':
+                    # pay attention to str != bytes
+                    if x == b'':
                         print (' s End of transmission') # for whatever reason
                         break
                 
