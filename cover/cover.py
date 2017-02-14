@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 
 # Probably not very useful yet. Just an idea.
 
@@ -7,6 +7,11 @@
 # It's 3 tasks. If server fails, then program should exit. If server fails with errno 98, then switch to a different port. Set up hidden service only when that port is known. Only client should wait for publication of service.
 
 # Once operational, the program sends random amounts of random traffic to the hidden service at random intervals. Feel free to implement more realistic-looking protocols.
+
+# dependencies
+#   PySocks
+#   stem
+#   pycrypto
 
 import time
 
@@ -241,7 +246,7 @@ def main(options, meanwait=DEFAULT_MEANWAIT, meanbytes=DEFAULT_MEANBYTES):
     processes1 = []
     processes2 = [] # exit only after processes1 quit
 
-    if o.has_key('remote'):
+    if 'remote' in o.keys():
         onion = o['remote']
 
     if o['server']:
