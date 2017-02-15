@@ -345,7 +345,7 @@ if __name__ == "__main__":
                 sys.exit(2)
 
     try:
-        main(o)
+        main(o, meanwait=meanwait, meanbytes=meanbytes)
 
     except KeyboardInterrupt as e:
         print ("Got ctrl-c, exiting more or less gracefully")
