@@ -42,7 +42,7 @@ class X:
             self.process(line)
 
     def process(self, line):
-        xre = r'([^\s]+) ([^\s]+) tsft (?:short preamble )?([^\s]+) Mb/s ([^\s]+) MHz ([^\s]+) ([^\s]+)dB signal (?:antenna )?.* BSSID:([^\s]+) DA:([^\s]+) SA:([^\s]+) (.+)'
+        xre = r'([^\s]+) ([^\s]+) tsft (?:short preamble )?([^\s]+) Mb/s ([^\s]+) MHz ([^\s]+) ([^\s]+)dBm? signal (?:antenna )?.* BSSID:([^\s]+) DA:([^\s]+) SA:([^\s]+) (.+)'
         try:
             m = re.match(xre, line).groups()
             time = m[0]
