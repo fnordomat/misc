@@ -6,9 +6,6 @@ edition = "2018"
 
 [dependencies]
 walkdir = "2"
-clap = "*"
-sha2 = "*"
-# TODO recompile with debug and release
-# seems like a lot of recursive dependencies for simple sha256
-# ring = "*"
+clap = "2.32.0"
+sha2 = "0.8.0"
 regex = "1"
