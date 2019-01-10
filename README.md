@@ -9,6 +9,7 @@ Various tools written in [rust](https://www.rust-lang.org).
 Automate once, save time every time. A growing collection of shell scripts which save the savvy user from ever having to undergo the ignominy of clicking through a captive portal again.
 - captive-be-gone/WIFIonICE.sh: Deutsche Bahn ICE trains / icomera AB
 - captive-be-gone/m3connect.sh: Accor group hotels / m3connect
+- captive-be-gone/CDWiFi.sh:    Czech trains / ombord(?)
 
 ## cover
 - cover/cover.py: Attempt to produce some cover traffic while using Tor.
