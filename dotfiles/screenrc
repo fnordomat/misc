@@ -1,0 +1,39 @@
+# no passwd
+bind x
+bind ^k
+bind K kill
+# bind m number
+
+# cleaner shell title
+shelltitle ''
+
+# allows you to keep what was displayed on your terminal when exiting things like man, less rather than having your terminal cleared
+altscreen on
+
+# shows your sessions in utmp
+deflogin on
+
+# Never, ever turn this off.
+autodetach on
+
+vbell off
+nethack on
+# utf8 on
+# bindkey -a ku \033[A
+# flow off
+bind ^s
+bind s
+defscrollback 7000
+
+hardstatus on
+hardstatus alwayslastline
+# hardstatus string "%{.bW}%-w%{.rW}%n %t%{-}%+w %=%{..G} %H %{..Y} %m/%d %c"
+# SHIT! if it is too dynamic (%c) then scroll jumps back most irritatingly
+hardstatus string "%{.gW}%-w%{.rW}%n %t%{-}%+w %=%{..G} %H %{..Y} %m/%d "
+termcapinfo xterm 'bc@:bs@'
+defutf8 on
+defencoding utf8
+
+# fix annoying scroll problem
+termcapinfo xterm|xterms|xs|rxvt ti@:te@
+
