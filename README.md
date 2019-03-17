@@ -3,7 +3,7 @@ Miscellaneous handy stuff.
 
 ## rust
 Various tools written in [rust](https://www.rust-lang.org).
-- rust/dupes: find probable duplicate files by SHA256
+- rust/dupes: find probable duplicate files by SHA256 - moved to [its own repo](https://github.com/fnordomat/dupes)
 
 ## captive-be-gone
 Automate once, save time every time. A growing collection of shell scripts which save the savvy user from ever having to undergo the ignominy of clicking through a captive portal again.
