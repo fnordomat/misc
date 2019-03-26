@@ -6,6 +6,7 @@ import System.Exit
 -- import XMonad.Actions.CycleRecentWS -- I don't understand how to configure this
 import XMonad.Actions.CycleWS
 import XMonad.Actions.DynamicWorkspaces
+import XMonad.Actions.SwapWorkspaces
 import XMonad.Layout.ShowWName
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Minimize
@@ -17,7 +18,10 @@ import qualified Data.Map        as M
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
-myTerminal      = "xterm -u8 -ls -fg lightgreen -bg black"
+--
+myTerminal      = "lxterminal"
+-- xterm -u8 -ls -fg lightgreen -bg black"
+--  -fg white -bg black"
 -- -fa 'Misc' -fs 10"
 
 -- Whether focus follows the mouse pointer.
@@ -194,6 +198,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((m .|. modm, k), windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_0 .. xK_9]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+
+    -- mod-ctrl-[0..9], swap
+    ++      
+    [((modm .|. controlMask, k), windows $ swapWithCurrent i)
+        | (i, k) <- zip (XMonad.workspaces conf) [xK_0 ..]]
     ++
 
     --
