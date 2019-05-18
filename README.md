@@ -2,8 +2,9 @@
 Miscellaneous handy and/or weird stuff.
 
 ## rust
-Various tools written in [rust](https://www.rust-lang.org).
+Various programs written in [rust](https://www.rust-lang.org).
 - rust/dupes: find probable duplicate files by SHA256 - moved to [its own repo](https://github.com/fnordomat/dupes)
+- rust/ecc_test: trying out the curve25519_dalek library
 
 ## satsolver
 A very simple, easy to understand DPLL SAT solver in C
