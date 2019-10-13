@@ -1,6 +1,9 @@
 # misc
 Miscellaneous handy and/or weird stuff.
 
+## haskell
+This folder contains stuff written in [haskell](https://www.haskell.org/). None of it is intended for production.
+
 ## rust
 I like learning new languages. This folder contains stuff written in [rust](https://www.rust-lang.org).
 - rust/dupes: find probable duplicate files by SHA256 - this one is actually useful. Moved to [its own repo](https://github.com/fnordomat/dupes)
@@ -8,7 +11,7 @@ I like learning new languages. This folder contains stuff written in [rust](http
 - rust/ot_poc: oblivious transfer protocol using RSA, as described on [Wikipedia](https://en.wikipedia.org/wiki/Oblivious_transfer)
 
 ## satsolver
-A very simple, easy to understand DPLL SAT solver in C
+A very simple, easy to understand DPLL SAT solver in C. It was written on an android device while waiting for the bus, etc. ... originally intended to golf it [IOCCC](http://ioccc.org/)-style.
 
 ## captive-be-gone
 Automate once, save time every time. A growing collection of shell scripts which save the savvy user from ever having to undergo the ignominy of clicking through a captive portal again.
