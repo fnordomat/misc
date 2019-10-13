@@ -1,8 +1,10 @@
 # misc
-Miscellaneous handy and/or weird stuff.
+Miscellaneous stuff, ranging from handy to useless.
 
 ## haskell
 This folder contains stuff written in [haskell](https://www.haskell.org/). None of it is intended for production.
+- haskell/comprviz: compresses input text file with gzip and outputs a HTML file where the background color of each character depends on the coding efficiency (red background = high number of bits, green = low number, blue channel indicates whether a backreference was used)
+- haskell/cyk: Cocke-Younger-Kasami like algorithm for experiments with context-free languages.
 
 ## rust
 I like learning new languages. This folder contains stuff written in [rust](https://www.rust-lang.org).
