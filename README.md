@@ -16,11 +16,12 @@ I like learning new languages. This folder contains stuff written in [rust](http
 A very simple, easy to understand DPLL SAT solver in C. It was written on an android device while waiting for the bus, etc. ... originally intended to golf it [IOCCC](http://ioccc.org/)-style.
 
 ## captive-be-gone
-Save time every time. A growing collection of shell scripts which save me from ever having to undergo the ignominy of clicking through a captive portal again. Use at your own risk - unsanitized input may be used in unsafe ways, especially in the older ones.
+A growing collection of shell scripts which save me from ever having to undergo the ignominy of clicking through a captive portal again. Caution: work in progress, unsanitized input might be used in unsafe ways. You've been warned.
 - captive-be-gone/WIFIonICE.sh: Deutsche Bahn ICE trains / icomera AB
-- captive-be-gone/m3connect.sh: Accor group hotels / m3connect (works for some m3connect networks only)
 - captive-be-gone/CDWiFi.sh:    Czech trains / ombord(?)
 - captive-be-gone/wifipass.py:  "wifipass.org"
+- captive-be-gone/m3connect.sh: Accor group hotels / m3connect (works for some m3connect networks only)
+- captive-be-gone/m34.py:       Accor group hotels / m3connect (works in Leipzig)
 
 ## cover
 - cover/cover.py: Attempt to produce some cover traffic while using Tor.
