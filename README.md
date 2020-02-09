@@ -5,6 +5,7 @@ Miscellaneous stuff, ranging from handy to useless.
 This folder contains stuff written in [haskell](https://www.haskell.org/). None of it is intended for production.
 - haskell/comprviz: compresses input text file with gzip and outputs a HTML file where the background color of each character depends on the coding efficiency (red background = high number of bits, green = low number, blue channel indicates whether a backreference was used)
 - haskell/cyk: Cocke-Younger-Kasami like algorithm for experiments with context-free languages.
+- haskell/editdistviz: visualisation of edit distance (the [Levenshtein string metric](https://en.wikipedia.org/wiki/Levenshtein_distance)). the distance between two words is computed and the intermediary results are shown in a beautiful diagram. Output format is SVG.
 
 ## rust
 I like learning new languages. This folder contains stuff written in [rust](https://www.rust-lang.org).
