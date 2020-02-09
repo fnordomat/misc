@@ -24,6 +24,8 @@ fn test_crypto_dalek_ecc() {
 
     let public_key = secret_key * P.decompress().unwrap();
 
+    // The following line is nonsense, of course. The message would have to be reversibly embedded, as explained in this SE thread:
+    // https://crypto.stackexchange.com/questions/76340/how-to-create-an-ec-point-from-a-plaintext-message-for-encryption
     let Msg = msg * P.decompress().unwrap();
     let kP = k * P.decompress().unwrap();
     let kYM = k * public_key + Msg;
