@@ -1,19 +1,27 @@
 # misc
-Miscellaneous handy and/or weird stuff.
+Miscellaneous stuff, ranging from handy to useless.
+
+## haskell
+This folder contains stuff written in [haskell](https://www.haskell.org/). None of it is intended for production.
+- haskell/comprviz: compresses input text file with gzip and outputs a HTML file where the background color of each character depends on the coding efficiency (red background = high number of bits, green = low number, blue channel indicates whether a backreference was used)
+- haskell/cyk: Cocke-Younger-Kasami like algorithm for experiments with context-free languages.
 
 ## rust
-Various programs written in [rust](https://www.rust-lang.org).
-- rust/dupes: find probable duplicate files by SHA256 - moved to [its own repo](https://github.com/fnordomat/dupes)
+I like learning new languages. This folder contains stuff written in [rust](https://www.rust-lang.org).
+- rust/dupes: find probable duplicate files by SHA256 - this one is actually useful. Moved to [its own repo](https://github.com/fnordomat/dupes)
 - rust/ecc_test: trying out the Curve25519 / [Ristretto](https://ristretto.group/) implementation [curve25519_dalek](https://dalek.rs/) library [available here](https://github.com/dalek-cryptography/curve25519-dalek)
+- rust/ot_poc: oblivious transfer protocol using RSA, as described on [Wikipedia](https://en.wikipedia.org/wiki/Oblivious_transfer). Disclaimer: I'm not a professional cryptographer! This might be all wrong.
 
 ## satsolver
-A very simple, easy to understand DPLL SAT solver in C
+A very simple, easy to understand DPLL SAT solver in C. It was written on an android device while waiting for the bus, etc. ...
 
 ## captive-be-gone
-Automate once, save time every time. A growing collection of shell scripts which save the savvy user from ever having to undergo the ignominy of clicking through a captive portal again.
+A growing collection of shell scripts which save me from ever having to undergo the ignominy of clicking through a captive portal again. Caution: work in progress, unsanitized input might be used in unsafe ways. You've been warned.
 - captive-be-gone/WIFIonICE.sh: Deutsche Bahn ICE trains / icomera AB
-- captive-be-gone/m3connect.sh: Accor group hotels / m3connect
 - captive-be-gone/CDWiFi.sh:    Czech trains / ombord(?)
+- captive-be-gone/wifipass.py:  "wifipass.org"
+- captive-be-gone/m3connect.sh: Accor group hotels / m3connect (works for some m3connect networks only)
+- captive-be-gone/m34.py:       Accor group hotels / m3connect (works in Leipzig)
 
 ## cover
 - cover/cover.py: Attempt to produce some cover traffic while using Tor.

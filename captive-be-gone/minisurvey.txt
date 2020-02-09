@@ -1,0 +1,29 @@
+# Other WIFIonICE solutions found on github:
+# similar to mine, but more fancy fingerprint
+https://gist.github.com/Akendo/7a1f26bf1bff8e1cedfbc3808c738e4e
+# similar
+https://gist.github.com/krmnn/b8f7c72e120c869d308ef8fcbb09d91f
+# not fully automatic, mac address as parameter
+https://gist.github.com/hacker-bastl/147718dcc637e150bfa394e7491ff84c
+# more complete, with mac changer
+https://gist.github.com/td00/1e9a4c34173228c7b9bd9ea97a6853cd
+# apple os
+https://gist.github.com/BirknerAlex/95505610826c31be2a361b2c90223072
+# outdated, it's not ombord any more
+https://gist.github.com/vollkorn1982/b78c3971ddef1b793935ed6482cfa039
+# idem
+https://gist.github.com/tjoen/27951085c2393108036cf10b9e5b6e31
+# idem
+https://gist.github.com/HaVonTe1/57680368eed56a9a32d7b126afc6c28a
+# similar to mine
+https://gist.github.com/DosAmp/7dfac4c947c6cf6d90c4e4c5ced33696
+# similar to mine
+https://gist.github.com/chrros95/39f18ed40409ad1fe8cd49c40f29d93e
+# more advanced than mine (it was found that a valid CSRFToken is not needed)
+# hence fewer requests
+https://gist.github.com/dicer/b21300fbbfdd8cf011756a8673b6f69c
+
+# automatic authorized-mac "spoofing", generally useful when authentication is required
+https://github.com/systematicat/hack-captive-portals
+
+

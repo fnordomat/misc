@@ -8,4 +8,4 @@ cat kookie.jar
 
 PHPSESSID=$(grep PHPSESSID kookie.jar | perl -ne '/([A-Za-z0-9]*)$/; print $1;')
 
-curl --stderr - --trace - --post301 --post302 --post303 -v -L -A 'Mozilla/5.0' -e 'https://portal.m3connect.de/en/login/free' -b "PHPSESSID=${PHPSESSID}" -F submit=Register -F "registration[tariff]=707" -F "registration[terms]=1" https://portal.m3connect.de/en/register/free | tee step0003
+curl --stderr - --trace - --post301 --post302 --post303 -c kookie.jar -v -L -A 'Mozilla/5.0' -e 'https://portal.m3connect.de/en/login/free' -b "PHPSESSID=${PHPSESSID}" -F submit=Register -F "registration[tariff]=707" -F "registration[terms]=1" https://portal.m3connect.de/en/register/free | tee step0003
