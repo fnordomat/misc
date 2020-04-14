@@ -13,6 +13,10 @@ I like learning new languages. This folder contains stuff written in [rust](http
 - rust/ecc_test: trying out the Curve25519 / [Ristretto](https://ristretto.group/) implementation [curve25519_dalek](https://dalek.rs/) library [available here](https://github.com/dalek-cryptography/curve25519-dalek)
 - rust/ot_poc: oblivious transfer protocol using RSA, as described on [Wikipedia](https://en.wikipedia.org/wiki/Oblivious_transfer). Disclaimer: I'm not a professional cryptographer! This might be all wrong.
 
+## scheme
+This folder contains stuff written in scheme, a classical, extremely flexible, dynamically typed family of programming languages.
+- scheme/wb.scm: [Weight-Balanced Trees](https://en.wikipedia.org/wiki/Weight-balanced_tree) implementation in scheme, and a proof of concept unit test facility (works with [chicken](https://www.call-cc.org) but unfortunately define-syntax macros aren't part of the standard).
+
 ## satsolver
 A very simple, easy to understand DPLL SAT solver in C. It was written on an android device while waiting for the bus, etc. ...
 
