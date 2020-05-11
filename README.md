@@ -1,6 +1,10 @@
 # misc
 Miscellaneous stuff, ranging from handy to useless.
 
+## aaaa
+This folder contains:
+- aaaa/magpo.py: turn a text or word list into virtual [magnetic poetry](https://en.wikipedia.org/wiki/Magnetic_Poetry). The idea is to open the resulting random SVG in an interactive editor such as [inkscape](https://inkscape.org/) and play with the words on the screen.
+
 ## haskell
 This folder contains stuff written in [haskell](https://www.haskell.org/). None of it is intended for production.
 - haskell/comprviz: compresses input text file with gzip and outputs a HTML file where the background color of each character depends on the coding efficiency (red background = high number of bits, green = low number, blue channel indicates whether a backreference was used)
