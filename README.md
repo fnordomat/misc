@@ -5,6 +5,11 @@ Miscellaneous stuff, ranging from handy to useless.
 This folder contains:
 - aaaa/magpo.py: turn a text or word list into virtual [magnetic poetry](https://en.wikipedia.org/wiki/Magnetic_Poetry). The idea is to open the resulting random SVG in an interactive editor such as [inkscape](https://inkscape.org/) and play with the words on the screen.
 
+## tinform
+This folder contains:
+- tinform/tinform.c: tokenizes and reshapes C code to fit a pixmap given as a monochrome (P1 or P4) netpbm file. It will try to put whitespaces on white pixels and other symbols on black pixels. Run it on itself to generate a virtually unlimited range of equivalent programs in different shapes.
+- Makefile: some tests. run `make doublecheck` to confirm that it works as intended.
+
 ## haskell
 This folder contains stuff written in [haskell](https://www.haskell.org/). None of it is intended for production.
 - haskell/comprviz: compresses input text file with gzip and outputs a HTML file where the background color of each character depends on the coding efficiency (red background = high number of bits, green = low number, blue channel indicates whether a backreference was used)
@@ -22,7 +27,7 @@ This folder contains stuff written in scheme, a classical, extremely flexible, d
 - scheme/wb.scm: [Weight-Balanced Trees](https://en.wikipedia.org/wiki/Weight-balanced_tree) implementation in scheme, and a proof of concept unit test facility (works with [chicken](https://www.call-cc.org) but unfortunately define-syntax macros aren't part of the standard).
 
 ## satsolver
-A very simple, easy to understand DPLL SAT solver in C. It was written on an android device while waiting for the bus, etc. ...
+A very simple, easy to understand DPLL SAT solver in C. It was written on an android device while waiting for the bus.
 
 ## captive-be-gone
 A growing collection of shell scripts which save me from ever having to undergo the ignominy of clicking through a captive portal again. Caution: work in progress, unsanitized input might be used in unsafe ways. You've been warned.
