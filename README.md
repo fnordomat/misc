@@ -21,6 +21,7 @@ I like learning new languages. This folder contains stuff written in [rust](http
 - rust/dupes: find probable duplicate files by SHA256 - this one is actually useful. Moved to [its own repo](https://github.com/fnordomat/dupes)
 - rust/ecc_test: trying out the Curve25519 / [Ristretto](https://ristretto.group/) implementation [curve25519_dalek](https://dalek.rs/) library [available here](https://github.com/dalek-cryptography/curve25519-dalek)
 - rust/ot_poc: oblivious transfer protocol using RSA, as described on [Wikipedia](https://en.wikipedia.org/wiki/Oblivious_transfer). Disclaimer: I'm not a professional cryptographer! This might be all wrong.
+- rust/noisetokio: snow crate ([noiseprotocol](https://noiseprotocol.org) implementation) + tokio example program: close-to-minimal example of client/server communication in the async paradigm with post-quantum hybrid encryption as an added bonus
 
 ## scheme
 This folder contains stuff written in scheme, a classical, extremely flexible, dynamically typed family of programming languages.
