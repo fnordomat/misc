@@ -26,4 +26,6 @@ https://gist.github.com/dicer/b21300fbbfdd8cf011756a8673b6f69c
 # automatic authorized-mac "spoofing", generally useful when authentication is required
 https://github.com/systematicat/hack-captive-portals
 
-
+# Solutions for other captive portals
+# ČD Wifi, with DNS settings
+https://gist.github.com/bzamecnik/46bd84c530e61a706ddca8a19263e2c1
