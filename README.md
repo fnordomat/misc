@@ -1,13 +1,12 @@
 # misc
 Miscellaneous stuff, ranging from handy to useless.
 
-## captive-be-gone
-Welcome to the wonderful world of captive portal solving. Many hotels and other venues, instead of just partnering with a [free mesh networking initiative](https://freifunk.net/en/) who would provide then with truly free wifi at virtually no cost, have instead opted to put up quests for the aspiring programmer, called "captive portals". The reward for solving one is internet access. This folder contains a growing collection of shell scripts which can save you from ever having to undergo the ignominy of clicking through a captive portal manually. Caution: work in progress, unsanitized input might be used in unsafe ways. You've been warned.
-- captive-be-gone/WIFIonICE.sh: Deutsche Bahn ICE trains / icomera AB
-- captive-be-gone/CDWiFi.sh:    Czech trains / ombord(?)
-- captive-be-gone/wifipass.py:  "wifipass.org"
-- captive-be-gone/m3connect.sh: Accor group hotels / m3connect (works for some m3connect networks only)
-- captive-be-gone/m34.py:       Accor group hotels / m3connect (works in Leipzig)
+## aaaa
+This folder contains:
+- aaaa/magpo.py: turn a text or word list into virtual [magnetic poetry](https://en.wikipedia.org/wiki/Magnetic_Poetry). The idea is to open the resulting random SVG in an interactive editor such as [inkscape](https://inkscape.org/) and play with the words on the screen.
+
+## satsolver
+A very simple, easy to understand DPLL SAT solver in C. It was written on an android device while waiting for the bus.
 
 ## rust
 I like learning new languages. This folder contains stuff written in [rust](https://www.rust-lang.org), a non-garbage-collected, strongly typed language designed with safety and speed in mind, which aims at usurping the throne from C and C++.
@@ -16,12 +15,13 @@ I like learning new languages. This folder contains stuff written in [rust](http
 - rust/ecc_test: trying out the Curve25519 / [Ristretto](https://ristretto.group/) implementation [curve25519_dalek](https://dalek.rs/) library [available here](https://github.com/dalek-cryptography/curve25519-dalek)
 - rust/ot_poc: oblivious transfer protocol using RSA, as described on [Wikipedia](https://en.wikipedia.org/wiki/Oblivious_transfer). Disclaimer: I'm not a professional cryptographer! This might be all wrong.
 
-## aaaa
-This folder contains:
-- aaaa/magpo.py: turn a text or word list into virtual [magnetic poetry](https://en.wikipedia.org/wiki/Magnetic_Poetry). The idea is to open the resulting random SVG in an interactive editor such as [inkscape](https://inkscape.org/) and play with the words on the screen.
-
-## satsolver
-A very simple, easy to understand DPLL SAT solver in C. It was written on an android device while waiting for the bus.
+## captive-be-gone
+Welcome to the wonderful world of captive portal solving. Many hotels and other venues, instead of just partnering with a [free mesh networking initiative](https://freifunk.net/en/) who would provide then with truly free wifi at virtually no cost, have instead opted to put up quests for the aspiring programmer, called "captive portals". The reward for solving one is internet access. This folder contains a growing collection of shell scripts which can save you from ever having to undergo the ignominy of clicking through a captive portal manually. Caution: work in progress, unsanitized input might be used in unsafe ways. You've been warned.
+- captive-be-gone/WIFIonICE.sh: Deutsche Bahn ICE trains / icomera AB
+- captive-be-gone/CDWiFi.sh:    Czech trains / ombord(?)
+- captive-be-gone/wifipass.py:  "wifipass.org"
+- captive-be-gone/m3connect.sh: Accor group hotels / m3connect (works for some m3connect networks only)
+- captive-be-gone/m34.py:       Accor group hotels / m3connect (works in Leipzig)
 
 ## tinform
 This folder contains:
