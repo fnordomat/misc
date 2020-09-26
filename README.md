@@ -8,6 +8,10 @@ This folder contains:
 ## satsolver
 A very simple, easy to understand DPLL SAT solver in C. It was written on an android device while waiting for the bus.
 
+## raspi
+This folder contains:
+- raspi/irpoll.c: decode 38kHz IR signals from a TV remote control. Not being a hardware buff, I tried the simplest thing that could possibly work, counting on and off periods in multiples of 1/38000 and comparing the resulting patterns with templates that I recorded with the same method. Turns out to work, and pretty reliably at that! Use with a TSOP48xx component [(look up the correct type for 38kHz and how to connect it)](https://www.vishay.com/docs/82459/tsop48.pdf).
+
 ## rust
 I like learning new languages. This folder contains stuff written in [rust](https://www.rust-lang.org), a non-garbage-collected, strongly typed language designed with safety and speed in mind, which aims at usurping the throne from C and C++.
 - rust/noisetokio: snow crate ([noiseprotocol](https://noiseprotocol.org) implementation) + tokio example program: close-to-minimal example of client/server communication in the async paradigm with post-quantum hybrid encryption as an added bonus
