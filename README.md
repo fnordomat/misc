@@ -26,6 +26,7 @@ Welcome to the wonderful world of captive portal solving. Many hotels and other 
 - captive-be-gone/wifipass.py:  "wifipass.org"
 - captive-be-gone/m3connect.sh: Accor group hotels / m3connect (works for some m3connect networks only)
 - captive-be-gone/m34.py:       Accor group hotels / m3connect (works in Leipzig)
+- captive-be-gone/hospitality.thecloud.eu.py: generic / TheCloud WiFi
 
 ## tinform
 This folder contains:
