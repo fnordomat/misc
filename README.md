@@ -5,6 +5,10 @@ Miscellaneous stuff, ranging from handy to useless.
 This folder contains:
 - aaaa/magpo.py: turn a text or word list into virtual [magnetic poetry](https://en.wikipedia.org/wiki/Magnetic_Poetry). The idea is to open the resulting random SVG in an interactive editor such as [inkscape](https://inkscape.org/) and play with the words on the screen.
 
+## dsp
+This folder contains:
+- dsp/demix/demix.py: very primitive approach to signal source separation. Input: stereo WAV file. Output: two mono WAVs that are linear combinations of the input channels minimizing correlation (globally over the whole length, not windowed or refined in any way)
+
 ## satsolver
 A very simple, easy to understand DPLL SAT solver in C. It was written on an android device while waiting for the bus.
 
