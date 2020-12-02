@@ -14,7 +14,7 @@ class Foo:
         self.headers = {}
         self.headers['User-Agent'] = 'Mozilla/5.0'
         self.pool = urllib3.PoolManager()
-        self.crookies = {}
+        self.cookies = {}
 
     def perform_xhr_post(self, url, extra_headers=[], fields={}):
         pool = self.pool
@@ -22,7 +22,7 @@ class Foo:
         headers['X-Requested-With'] = 'XMLHttpRequest'
         for (k,v) in extra_headers:
             headers[k] = v
-        xs = list(self.crookies.items())
+        xs = list(self.cookies.items())
         headers['Cookie'] = "; ".join(["%s=%s" % (k,v) \
                                        for (k,v) in xs \
                                        if k != 'PHPSESSID'])
@@ -47,20 +47,20 @@ class Foo:
         if f.get_redirect_location():
             print("redirect: %s" % f.get_redirect_location())
 
-        for crookie1 in f.getheaders().get_all('Set-Cookie'):
-            crookies1 = re.findall('([^= ]*)=([^; ]*); ', crookie1)
-            for (k,v) in crookies1:
+        for cookie1 in f.getheaders().get_all('Set-Cookie'):
+            cookies1 = re.findall('([^= ]*)=([^; ]*); ', cookie1)
+            for (k,v) in cookies1:
                 # what's the exact syntax? we don't really care. just remove the accidentally captured strings
                 if not (re.match('[Mm]ax-[Aa]ge', k)  or re.match('path', k)):
-                    if self.crookies.get(k):
-                        print("replacing crookie %s with %s" % (k, v) )
+                    if self.cookies.get(k):
+                        print("replacing cookie %s with %s" % (k, v) )
                     else:
-                        print("setting crookie %s to %s" % (k, v) )
+                        print("setting cookie %s to %s" % (k, v) )
 
                     if 'himalaya-site-ident' == k:
                         print("himalaya-site-ident: ",base64.b64decode(v.replace('%3D', '=')))
 
-                    self.crookies[k] = v
+                    self.cookies[k] = v
         print(f.data)
         print()
         return f
@@ -69,7 +69,7 @@ class Foo:
         pool = self.pool
         headers = self.headers.copy()
 
-        headers['Cookie'] = "; ".join(["%s=%s" % (k,v) for (k,v) in self.crookies.items()])
+        headers['Cookie'] = "; ".join(["%s=%s" % (k,v) for (k,v) in self.cookies.items()])
 
         print("request GET %s" % url)
         print("request headers: %s" % headers)
@@ -90,7 +90,8 @@ f2 = foo.perform_get(url)
 url = f2.get_redirect_location()
 f2 = foo.perform_get(url)
 
-url = f2.getheaders().get('location')
+f2_headers = {k.lower(): v for k, v in f2.getheaders().items()}
+url = f2_headers.get('location')
 f3 = foo.perform_get(url)
 
 tokenstring = re.findall(b'"token":"([^"]+)"', f3.data)[0]
@@ -104,7 +105,7 @@ f4aa = foo.perform_get(url)
 headers4 = {}
 # headers['Referer'] = 'https://accor.conn4.com/'
 headers4['Referer'] = sceneurl.decode()
-headers4['Cookie'] = "; ".join(["%s=%s" % (k,v) for (k,v) in foo.crookies.items()])
+headers4['Cookie'] = "; ".join(["%s=%s" % (k,v) for (k,v) in foo.cookies.items()])
 headers4['X-Requested-With'] = 'XMLHttpRequest'
 headers4['Origin'] = 'https://accor.conn4.com'
 # if we made a mistake before arriving here, the server uses this value for Allow-Origin instead:
