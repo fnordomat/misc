@@ -6,7 +6,7 @@ Collection of client side jitsi customizations.
 
 Paste this into JS console (developer tools, Ctrl+Shift+I in firefox or chromium) after creating / joining the conference, to collect "raised hand" events in a list.
 
-Useful for classes or other presentations if you are the presenter and want a list of people who raised their hand to ask questions.
+Useful for classroom settings or other presentations if you are the presenter and want a list of people who raised their hand to ask questions.
 
 (Normally, the "raised hand" just results in a transient notification and a tiny icon, both of which are too easy to overlook).
 
